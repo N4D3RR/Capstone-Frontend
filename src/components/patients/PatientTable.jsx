@@ -91,7 +91,6 @@ const PatientTable = function ({
                     {patient.firstName} {patient.lastName}
                   </div>
                   <div className="text-muted" style={{ fontSize: 12 }}>
-                    {/* birthDate arriva come array [yyyy, mm, dd] da Spring */}
                     {patient.birthDate
                       ? new Date(patient.birthDate).toLocaleDateString("it-IT")
                       : "—"}
@@ -120,7 +119,7 @@ const PatientTable = function ({
                 <td
                   className="text-end"
                   onClick={function (e) {
-                    e.stopPropagation
+                    e.stopPropagation()
                   }}
                 >
                   <button

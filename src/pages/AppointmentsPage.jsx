@@ -1,12 +1,26 @@
 import { useState } from "react"
 import api from "../services/api"
 import TopBar from "../components/layout/TopBar"
-import { Spinner } from "react-bootstrap"
+import { Spinner, Alert } from "react-bootstrap"
 import FullCalendar from "@fullcalendar/react"
 import timeGridPlugin from "@fullcalendar/timegrid"
 import dayGridPlugin from "@fullcalendar/daygrid"
 import interactionPlugin from "@fullcalendar/interaction"
 import AppointmentForm from "../components/appointments/AppointmentForm"
+
+// colori per stato appuntamento
+const statusColors = {
+  CONFIRMED: { bg: "#2a9d8f", border: "#21867a" },
+  COMPLETED: { bg: "#9ba8b7", border: "#8494a5" },
+  CANCELLED: { bg: "#ef4444", border: "#dc2626" },
+  NO_SHOW: { bg: "#f59e0b", border: "#d97706" },
+}
+
+const toLocalISO = function (date) {
+  return new Date(date.getTime() - date.getTimezoneOffset() * 60000)
+    .toISOString()
+    .substring(0, 19)
+}
 
 const AppointmentsPage = function () {
   const [appointments, setAppointments] = useState([])
@@ -25,11 +39,16 @@ const AppointmentsPage = function () {
       const end = new Date(a.dateTime)
       end.setMinutes(end.getMinutes() + a.duration)
 
+      const colors = statusColors[a.status] || statusColors.CONFIRMED
+
       return {
         id: a.id,
         title: a.patient.firstName + " " + a.patient.lastName,
         start: start.toISOString(),
         end: end.toISOString(),
+        backgroundColor: colors.bg,
+        borderColor: colors.border,
+        textColor: "#fff",
         extendedProps: { appointment: a },
       }
     })
@@ -47,7 +66,7 @@ const AppointmentsPage = function () {
           to.toISOString(),
       )
       .then(function (data) {
-        setAppointments(data.content)
+        setAppointments(data.content || [])
       })
       .catch(function () {
         setError("Errore nel caricamento degli appuntamenti")
@@ -70,15 +89,90 @@ const AppointmentsPage = function () {
     setShowModal(true)
   }
 
+  //click su appuntamento apre modale modifica
   const handleEventClick = function (info) {
     setSelectedAppointment(info.event.extendedProps.appointment)
     setSelectedDate(null)
     setShowModal(true)
   }
 
+  // drag & drop — sposta appuntamento a nuova data/ora
+  const handleEventDrop = function (info) {
+    const appointment = info.event.extendedProps.appointment
+    const newDateTime = toLocalISO(info.event.start)
+
+    api
+      .put("/api/appointments/" + appointment.id, {
+        dateTime: newDateTime,
+        duration: appointment.duration,
+        status: appointment.status,
+        notes: appointment.notes || null,
+      })
+      .then(function () {
+        // aggiorno la lista senza ricaricare tutto
+        if (currentRange.from && currentRange.to) {
+          fetchAppointments(currentRange.from, currentRange.to)
+        }
+      })
+      .catch(function () {
+        // se il backend rifiuta, rimetto l'evento dov'era
+        info.revert()
+        setError("Errore nello spostamento dell'appuntamento")
+      })
+  }
+
+  // resize — cambia durata trascinando il bordo inferiore
+  const handleEventResize = function (info) {
+    const appointment = info.event.extendedProps.appointment
+    // calcolo la nuova durata in minuti
+    const newDuration = Math.round(
+      (info.event.end.getTime() - info.event.start.getTime()) / 60000,
+    )
+
+    api
+      .put("/api/appointments/" + appointment.id, {
+        dateTime: toLocalISO(info.event.start),
+        duration: newDuration,
+        status: appointment.status,
+        notes: appointment.notes || null,
+      })
+      .then(function () {
+        if (currentRange.from && currentRange.to) {
+          fetchAppointments(currentRange.from, currentRange.to)
+        }
+      })
+      .catch(function () {
+        info.revert()
+        setError("Errore nella modifica della durata")
+      })
+  }
+
+  // callback dopo create/edit/delete da modale
+  const handleSaved = function () {
+    setShowModal(false)
+    setSelectedAppointment(null)
+    setSelectedDate(null)
+    if (currentRange.from && currentRange.to) {
+      fetchAppointments(currentRange.from, currentRange.to)
+    }
+  }
+
   return (
     <>
       <TopBar title="Agenda" />
+
+      {error && (
+        <Alert
+          variant="danger"
+          dismissible
+          onClose={function () {
+            setError("")
+          }}
+          className="mb-3"
+        >
+          {error}
+        </Alert>
+      )}
 
       {loading && <Spinner animation="border" />}
 
@@ -100,6 +194,7 @@ const AppointmentsPage = function () {
         nowIndicator={true}
         weekends={false}
         selectable={true}
+        editable={true}
         businessHours={{
           daysOfWeek: [1, 2, 3, 4, 5],
           startTime: "09:00",
@@ -109,6 +204,8 @@ const AppointmentsPage = function () {
         datesSet={handleDateSet}
         dateClick={handleDateClick}
         eventClick={handleEventClick}
+        eventDrop={handleEventDrop}
+        eventResize={handleEventResize}
       />
       <AppointmentForm
         show={showModal}
@@ -117,18 +214,11 @@ const AppointmentsPage = function () {
         onClose={function () {
           setShowModal(false)
         }}
-        onSaved={function () {
-          setShowModal(false)
-          setSelectedAppointment(null)
-          setSelectedDate(null)
-          if (currentRange.from && currentRange.to) {
-            fetchAppointments(currentRange.from, currentRange.to)
-          }
-        }}
+        onSaved={handleSaved}
       />
     </>
   )
 }
 
-//TODO: migliorare calendario con time slot da 15 min, filtro o divisione per operatore/poltrona, drag and drop appuntamenti
+//TODO: migliorare calendario con time slot da 15 min, filtro o divisione per operatore/poltrona
 export default AppointmentsPage

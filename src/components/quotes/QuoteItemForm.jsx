@@ -62,6 +62,25 @@ const QuoteItemForm = function ({ show, quoteId, onClose, onSaved }) {
     setLoading(true)
     setError("")
 
+    //validazione numeri denti con FDI
+    const tooth = parseInt(form.toothNumber)
+    const validRanges = [
+      [11, 18],
+      [21, 28],
+      [31, 38],
+      [41, 48],
+    ]
+    const isValidTooth = validRanges.some(function (r) {
+      return tooth >= r[0] && tooth <= r[1]
+    })
+    if (!isValidTooth) {
+      setError(
+        "Numero dente non valido. Usa la notazione FDI: 11-18, 21-28, 31-38, 41-48",
+      )
+      setLoading(false)
+      return
+    }
+
     const payload = {
       quoteId: quoteId,
       procedureId: form.procedureId,
