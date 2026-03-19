@@ -13,6 +13,7 @@ import QuotesPage from "./pages/QuotesPage"
 import QuoteDetailPage from "./pages/QuoteDetailPage"
 import AppointmentsPage from "./pages/AppointmentsPage"
 import UsersPage from "./pages/UsersPage"
+import PaymentsPage from "./pages/PaymentsPage"
 
 //pagine che richiedono autenticazione
 //durante la verifica, spinner attivo
@@ -100,7 +101,7 @@ function App() {
             <Route path="/appointments" element={<AppointmentsPage />} />
             <Route path="/quotes" element={<QuotesPage />} />
             <Route path="/quotes/:id" element={<QuoteDetailPage />} />
-            {/* <Route path="/payments" element={<PaymentsPage />} /> */}
+            <Route path="/payments" element={<PaymentsPage />} />
             <Route path="/procedures" element={<ProceduresPage />} />
             <Route path="/users" element={<UsersPage />} />
           </Route>
