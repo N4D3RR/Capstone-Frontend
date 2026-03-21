@@ -27,7 +27,7 @@ const TopBar = function ({ title, subtitle }) {
     // PatientController.searchByLastName()
     api
       .get(
-        "/api/patients/search?lastName=" +
+        "/api/patients/global-search?q=" +
           encodeURIComponent(query) +
           "&size=5",
       )
@@ -72,13 +72,13 @@ const TopBar = function ({ title, subtitle }) {
 
       {/* campo di ricerca */}
       <div style={{ position: "relative" }}>
-        <InputGroup style={{ width: 280 }}>
+        <InputGroup style={{ width: 370 }}>
           <InputGroup.Text className="bg-white border-end-0">
             <BsSearch className="text-muted" size={16} />
           </InputGroup.Text>
           <Form.Control
             type="text"
-            placeholder="Cerca per cognome..."
+            placeholder="Cerca per cognome, CF, telefono..."
             className="border-start-0"
             value={searchQuery}
             onChange={handleSearch}
@@ -107,6 +107,7 @@ const TopBar = function ({ title, subtitle }) {
                   </div>
                   <div className="text-muted" style={{ fontSize: 12 }}>
                     {patient.fiscalCode}
+                    {patient.phone && " · " + patient.phone}
                   </div>
                 </div>
               )
