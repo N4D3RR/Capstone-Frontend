@@ -26,12 +26,19 @@ const PROCEDURE_COLORS = [
   { label: "Igiene", color: "#22c55e", keys: ["igiene", "scaling", "pulizia"] },
 ]
 
-const getProcedureColor = function (name) {
-  if (!name) return null
-  const n = name.toLowerCase()
+const getProcedureColor = function (name, code, description) {
+  const fields = [name, code, description]
+    .filter(Boolean)
+    .map(function (f) {
+      return f.toLowerCase()
+    })
+    .join(" ")
+
+  if (!fields) return null
+
   const match = PROCEDURE_COLORS.find(function (p) {
     return p.keys.some(function (k) {
-      return n.includes(k)
+      return fields.includes(k)
     })
   })
   return match ? match.color : "#2a9d8f"
@@ -111,7 +118,11 @@ const ToothPanel = function ({
                       borderRadius: "50%",
                       flexShrink: 0,
                       backgroundColor:
-                        getProcedureColor(t.procedureName) ?? "#94a3b8",
+                        getProcedureColor(
+                          t.procedureName,
+                          t.procedureCode,
+                          t.procedureDescription,
+                        ) ?? "#94a3b8",
                     }}
                   />
                   <strong style={{ fontSize: 13 }}>{t.procedureName}</strong>
@@ -243,6 +254,7 @@ const Odontogram = function ({ patientId }) {
           map[key].push({
             procedureName: t.procedure?.name ?? "",
             procedureCode: t.procedure?.code ?? "",
+            procedureDescription: t.procedure?.description ?? "",
             date: t.date,
             cost: t.cost,
             notes: t.notes,
@@ -270,7 +282,12 @@ const Odontogram = function ({ patientId }) {
       Object.entries(toothMap).forEach(function (entry) {
         const code = entry[0]
         const treats = entry[1]
-        const color = getProcedureColor(treats[0]?.procedureName) ?? "#2a9d8f"
+        const color =
+          getProcedureColor(
+            treats[0]?.procedureName,
+            treats[0]?.procedureCode,
+            treats[0]?.procedureDescription,
+          ) ?? "#2a9d8f"
         if (!groups[color]) {
           groups[color] = {
             label: treats[0]?.procedureName ?? "Trattamento",
