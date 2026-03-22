@@ -11,7 +11,7 @@ const PROCEDURE_COLORS = [
   {
     label: "Endodonzia",
     color: "#f59e0b",
-    keys: ["endodonzia", "devitalizzazione", "root canal"],
+    keys: ["endodonzia", "devitalizzazione", "root canal", "end"],
   },
   {
     label: "Corona/Protesi",
@@ -21,7 +21,7 @@ const PROCEDURE_COLORS = [
   {
     label: "Otturazione",
     color: "#2a9d8f",
-    keys: ["otturazione", "filling", "composita"],
+    keys: ["otturazione", "filling", "composita", "est"],
   },
   { label: "Igiene", color: "#22c55e", keys: ["igiene", "scaling", "pulizia"] },
 ]
@@ -227,6 +227,7 @@ const Odontogram = function ({ patientId }) {
 
   useEffect(
     function () {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       loadTreatments()
     },
     [loadTreatments],
