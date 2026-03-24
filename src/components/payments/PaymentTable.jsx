@@ -1,6 +1,7 @@
 import { Table, Spinner, Pagination } from "react-bootstrap"
-import { BsPencilFill, BsTrashFill } from "react-icons/bs"
+import { BsFileEarmarkPdf, BsPencilFill, BsTrashFill } from "react-icons/bs"
 import StatusBadge from "../common/StatusBadge"
+import api from "../../services/api"
 
 const methodLabels = {
   CASH: "Contanti",
@@ -18,6 +19,22 @@ const PaymentTable = function ({
   onEdit,
   onDelete,
 }) {
+  const handleDownloadInvoice = function (id) {
+    api
+      .getBlob("/api/payments/" + id + "/invoice")
+      .then(function (blob) {
+        const url = window.URL.createObjectURL(blob)
+        const a = document.createElement("a")
+        a.href = url
+        a.download = "fattura-" + id + ".pdf"
+        a.click()
+        window.URL.revokeObjectURL(url)
+      })
+      .catch(function () {
+        alert("Errore nella generazione della fattura")
+      })
+  }
+
   const renderPagination = function () {
     if (totalPages <= 1) return null
     const items = []
@@ -112,6 +129,17 @@ const PaymentTable = function ({
                     e.stopPropagation()
                   }}
                 >
+                  {p.status === "PAID" && (
+                    <button
+                      className="btn btn-sm btn-outline-success me-2"
+                      title="Scarica Fattura"
+                      onClick={function () {
+                        handleDownloadInvoice(p.id)
+                      }}
+                    >
+                      <BsFileEarmarkPdf size={13} />
+                    </button>
+                  )}
                   <button
                     className="btn btn-sm btn-outline-secondary me-2"
                     title="Modifica"

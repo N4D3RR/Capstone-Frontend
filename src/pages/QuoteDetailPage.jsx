@@ -1,7 +1,12 @@
 import { useState, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { Button, Alert, Spinner, Table, Badge } from "react-bootstrap"
-import { BsArrowLeft, BsPlusLg, BsTrashFill } from "react-icons/bs"
+import {
+  BsArrowLeft,
+  BsFileEarmarkPdf,
+  BsPlusLg,
+  BsTrashFill,
+} from "react-icons/bs"
 import TopBar from "../components/layout/TopBar"
 import StatusBadge from "../components/common/StatusBadge"
 import QuoteItemForm from "../components/quotes/QuoteItemForm"
@@ -72,6 +77,22 @@ const QuoteDetailPage = function () {
     fetchQuote()
   }
 
+  const handleDownloadPdf = function () {
+    api
+      .getBlob("/api/quotes/" + id + "/pdf")
+      .then(function (blob) {
+        const url = window.URL.createObjectURL(blob)
+        const a = document.createElement("a")
+        a.href = url
+        a.download = "preventivo-" + id + ".pdf"
+        a.click()
+        window.URL.revokeObjectURL(url)
+      })
+      .catch(function () {
+        setError("Errore nella generazione del PDF")
+      })
+  }
+
   // calcolo totale
   const total =
     quote && quote.items
@@ -121,6 +142,15 @@ const QuoteDetailPage = function () {
 
         <div className="d-flex align-items-center gap-2">
           <StatusBadge status={quote.status} />
+          <Button
+            size="sm"
+            variant="outline-secondary"
+            className="fw-semibold"
+            onClick={handleDownloadPdf}
+          >
+            <BsFileEarmarkPdf className="me-1" />
+            Scarica PDF
+          </Button>
           {/* bottoni cambio stato — solo se DRAFT */}
           {isDraft && (
             <>

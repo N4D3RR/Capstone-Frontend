@@ -78,6 +78,23 @@ const api = {
       body: formData,
     })
   },
+
+  getBlob: function (endpoint) {
+    const token = getToken()
+    return fetch(API_URL + endpoint, {
+      method: "GET",
+      headers: { Authorization: "Bearer " + token },
+    }).then(function (res) {
+      if (res.status === 401) {
+        localStorage.removeItem("token")
+        localStorage.removeItem("user")
+        window.location.href = "/login"
+        return Promise.reject({ message: "Session expired" })
+      }
+      if (!res.ok) return Promise.reject({ message: "Errore nel download" })
+      return res.blob()
+    })
+  },
 }
 
 export default api
