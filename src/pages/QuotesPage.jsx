@@ -8,7 +8,7 @@ import {
   Badge,
 } from "react-bootstrap"
 import { BsPlusLg, BsEyeFill, BsTrashFill } from "react-icons/bs"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import TopBar from "../components/layout/TopBar"
 import QuoteForm from "../components/quotes/QuoteForm"
 import StatusBadge from "../components/common/StatusBadge"

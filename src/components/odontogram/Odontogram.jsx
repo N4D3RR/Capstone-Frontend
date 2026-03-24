@@ -4,6 +4,7 @@ import "react-odontogram/style.css"
 import { Button, Badge, Spinner, ListGroup, Offcanvas } from "react-bootstrap"
 import api from "../../services/api"
 import TreatmentForm from "../treatments/TreatmentForm"
+import OdontogramQuoteModal from "./OdontogramQuoteModal"
 
 const PROCEDURE_COLORS = [
   { label: "Estrazione", color: "#ef4444", keys: ["estrazione", "extraction"] },
@@ -77,6 +78,11 @@ const ToothPanel = function ({
   loadingProc,
   onAddTreatment,
   onSelectProcedure,
+  onAddToQuote,
+  selectedProcedure,
+  pendingProcedure,
+  onConfirmQuote,
+  onConfirmTreatment,
 }) {
   return (
     <div>
@@ -183,14 +189,43 @@ const ToothPanel = function ({
           )}
         </>
       ) : (
-        <Button
-          size="sm"
-          className="border-0 fw-semibold w-100"
-          style={{ backgroundColor: "#2a9d8f" }}
-          onClick={onAddTreatment}
-        >
-          + Aggiungi trattamento
-        </Button>
+        <>
+          {pendingProcedure ? (
+            <>
+              <hr className="my-2" />
+              <p className="small text-secondary mb-2">
+                <strong>{pendingProcedure.name}</strong> — cosa vuoi fare?
+              </p>
+              <Button
+                size="sm"
+                className="border-0 fw-semibold w-100"
+                style={{ backgroundColor: "#2a9d8f" }}
+                onClick={onConfirmTreatment}
+              >
+                ✓ Registra trattamento
+              </Button>
+              <Button
+                size="sm"
+                variant="outline-secondary"
+                className="fw-semibold w-100 mt-2"
+                style={{ color: "#2a9d8f", border: "1px solid #2a9d8f" }}
+                onClick={onConfirmQuote}
+              >
+                + Aggiungi al preventivo
+              </Button>
+            </>
+          ) : (
+            /* bottone iniziale per aprire il picker */
+            <Button
+              size="sm"
+              className="border-0 fw-semibold w-100"
+              style={{ backgroundColor: "#2a9d8f" }}
+              onClick={onAddTreatment}
+            >
+              + Seleziona prestazione
+            </Button>
+          )}
+        </>
       )}
     </div>
   )
@@ -207,6 +242,9 @@ const Odontogram = function ({ patientId }) {
   const [selectedProcedure, setSelectedProcedure] = useState(null)
   const [showTreatmentForm, setShowTreatmentForm] = useState(false)
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
+  const [quoteCart, setQuoteCart] = useState([])
+  const [showQuoteModal, setShowQuoteModal] = useState(false)
+  const [pendingProcedure, setPendingProcedure] = useState(null)
 
   useEffect(function () {
     const handleResize = function () {
@@ -334,14 +372,52 @@ const Odontogram = function ({ patientId }) {
 
   const handleSelectProcedure = function (proc) {
     setSelectedProcedure(proc)
-    setShowDrawer(false)
-    setShowTreatmentForm(true)
+    setPendingProcedure(proc)
+    setShowProcPicker(false)
   }
 
   const handleTreatmentSaved = function () {
     setShowTreatmentForm(false)
     setSelectedProcedure(null)
     loadTreatments()
+  }
+
+  const handleAddToQuote = function (proc) {
+    setQuoteCart(function (prev) {
+      //evito duplicati stessa procedura e stesso dente
+      const exists = prev.some(function (item) {
+        return (
+          item.toothNumber === selectedTooth && item.procedure.id === proc.id
+        )
+      })
+      if (exists) return prev
+      return [...prev, { toothNumber: selectedTooth, procedure: proc }]
+    })
+    setShowProcPicker(false)
+  }
+
+  const handleConfirmTreatment = function () {
+    setPendingProcedure(null)
+    setShowTreatmentForm(true)
+    setShowDrawer(false)
+  }
+
+  const handleConfirmQuote = function () {
+    if (!pendingProcedure) return
+    setQuoteCart(function (prev) {
+      const exists = prev.some(function (item) {
+        return (
+          item.toothNumber === selectedTooth &&
+          item.procedure.id === pendingProcedure.id
+        )
+      })
+      if (exists) return prev
+      return [
+        ...prev,
+        { toothNumber: selectedTooth, procedure: pendingProcedure },
+      ]
+    })
+    setPendingProcedure(null)
   }
 
   const tooltipContent = useCallback(function (payload) {
@@ -367,6 +443,11 @@ const Odontogram = function ({ patientId }) {
       loadingProc={loadingProc}
       onAddTreatment={handleOpenProcPicker}
       onSelectProcedure={handleSelectProcedure}
+      selectedProcedure={selectedProcedure}
+      onAddToQuote={handleAddToQuote}
+      pendingProcedure={pendingProcedure}
+      onConfirmTreatment={handleConfirmTreatment}
+      onConfirmQuote={handleConfirmQuote}
     />
   ) : (
     <EmptyPanel />
@@ -499,6 +580,90 @@ const Odontogram = function ({ patientId }) {
         }}
         onSaved={handleTreatmentSaved}
       />
+
+      <OdontogramQuoteModal
+        show={showQuoteModal}
+        patientId={patientId}
+        cartItems={quoteCart}
+        onClose={function () {
+          setShowQuoteModal(false)
+        }}
+        onSaved={function () {
+          setShowQuoteModal(false)
+          setQuoteCart([])
+        }}
+      />
+      {quoteCart.length > 0 && (
+        <div
+          className="my-4 p-3 rounded"
+          style={{ backgroundColor: "#f0fdf4", border: "1px solid #86efac" }}
+        >
+          {/* Header con contatore e bottoni */}
+          <div className="d-flex align-items-center justify-content-between mb-2">
+            <span style={{ fontSize: 13, fontWeight: 600 }}>
+              <strong>{quoteCart.length}</strong> voci nel preventivo
+            </span>
+            <div className="d-flex gap-2">
+              <Button
+                size="sm"
+                variant="outline-danger"
+                onClick={function () {
+                  setQuoteCart([])
+                }}
+              >
+                Svuota
+              </Button>
+              <Button
+                size="sm"
+                className="border-0 fw-semibold"
+                style={{ backgroundColor: "#2a9d8f" }}
+                onClick={function () {
+                  setShowQuoteModal(true)
+                }}
+              >
+                Crea preventivo →
+              </Button>
+            </div>
+          </div>
+
+          {/* Lista voci */}
+          <ul className="list-unstyled mb-0">
+            {quoteCart.map(function (item, i) {
+              return (
+                <li
+                  key={i}
+                  className="d-flex align-items-center justify-content-between py-1"
+                  style={{
+                    fontSize: 12,
+                    borderBottom:
+                      i < quoteCart.length - 1 ? "1px solid #bbf7d0" : "none",
+                  }}
+                >
+                  <span>
+                    <strong className="me-1">Dente {item.toothNumber}</strong>
+                    <span className="text-muted">— {item.procedure.name}</span>
+                  </span>
+                  <Button
+                    size="sm"
+                    variant="link"
+                    className="p-0 text-danger"
+                    style={{ fontSize: 12 }}
+                    onClick={function () {
+                      setQuoteCart(function (prev) {
+                        return prev.filter(function (_, idx) {
+                          return idx !== i
+                        })
+                      })
+                    }}
+                  >
+                    ✕
+                  </Button>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+      )}
     </>
   )
 }

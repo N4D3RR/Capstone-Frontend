@@ -3,14 +3,13 @@ import { Modal, Form, Button, Spinner, Alert } from "react-bootstrap"
 import { AuthContext } from "../../context/AuthContext"
 import api from "../../services/api"
 
-const QuoteForm = function ({ show, onClose, onSaved }) {
+const emptyForm = {
+  patientId: "",
+  dentistId: "",
+  notes: "",
+}
+const QuoteForm = function ({ show, onClose, onSaved, patientId }) {
   const { isAdmin } = useContext(AuthContext)
-
-  const emptyForm = {
-    patientId: "",
-    dentistId: "",
-    notes: "",
-  }
 
   const [form, setForm] = useState(emptyForm)
   const [patients, setPatients] = useState([])
@@ -22,7 +21,7 @@ const QuoteForm = function ({ show, onClose, onSaved }) {
   useEffect(
     function () {
       if (!show) return
-      setForm(emptyForm)
+      setForm({ emptyForm, patientId: patientId || "" })
       setError("")
       setLoadingData(true)
 
@@ -100,26 +99,28 @@ const QuoteForm = function ({ show, onClose, onSaved }) {
             </div>
           ) : (
             <>
-              <Form.Group className="mb-3">
-                <Form.Label className="fw-semibold small text-secondary">
-                  Paziente *
-                </Form.Label>
-                <Form.Select
-                  name="patientId"
-                  value={form.patientId}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="">Seleziona un paziente...</option>
-                  {patients.map(function (p) {
-                    return (
-                      <option key={p.id} value={p.id}>
-                        {p.lastName} {p.firstName} — {p.fiscalCode}
-                      </option>
-                    )
-                  })}
-                </Form.Select>
-              </Form.Group>
+              {!patientId && (
+                <Form.Group className="mb-3">
+                  <Form.Label className="fw-semibold small text-secondary">
+                    Paziente *
+                  </Form.Label>
+                  <Form.Select
+                    name="patientId"
+                    value={form.patientId}
+                    onChange={handleChange}
+                    required
+                  >
+                    <option value="">Seleziona un paziente...</option>
+                    {patients.map(function (p) {
+                      return (
+                        <option key={p.id} value={p.id}>
+                          {p.lastName} {p.firstName} — {p.fiscalCode}
+                        </option>
+                      )
+                    })}
+                  </Form.Select>
+                </Form.Group>
+              )}
 
               {/* select dentista — visibile solo all'ADMIN */}
               {isAdmin() && (
