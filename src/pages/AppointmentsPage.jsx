@@ -10,7 +10,7 @@ import AppointmentForm from "../components/appointments/AppointmentForm"
 
 // colori per stato appuntamento
 const statusColors = {
-  CONFIRMED: { bg: "#2a9d8f", border: "#21867a" },
+  CONFIRMED: { bg: "var(--bs-primary)", border: "#21867a" },
   COMPLETED: { bg: "#9ba8b7", border: "#8494a5" },
   CANCELLED: { bg: "#ef4444", border: "#dc2626" },
   NO_SHOW: { bg: "#f59e0b", border: "#d97706" },

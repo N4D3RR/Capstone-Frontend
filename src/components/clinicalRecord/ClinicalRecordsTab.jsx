@@ -47,7 +47,11 @@ const ClinicalRecordTab = function ({ patientId }) {
   if (loading)
     return (
       <div className="d-flex justify-content-center py-4">
-        <Spinner animation="border" size="sm" style={{ color: "#2a9d8f" }} />
+        <Spinner
+          animation="border"
+          size="sm"
+          style={{ color: "var(--bs-primary)" }}
+        />
       </div>
     )
 
@@ -57,8 +61,7 @@ const ClinicalRecordTab = function ({ patientId }) {
         <div className="text-center py-4">
           <p className="text-muted mt-3">Nessuna cartella clinica registrata</p>
           <Button
-            className="border-0 fw-semibold"
-            style={{ backgroundColor: "#2a9d8f" }}
+            className="border-0 fw-semibold btn-clinic "
             onClick={function () {
               setShowModal(true)
             }}
@@ -71,8 +74,7 @@ const ClinicalRecordTab = function ({ patientId }) {
           <div className="d-flex justify-content-end mb-3">
             <Button
               size="sm"
-              className="border-0 fw-semibold"
-              style={{ backgroundColor: "#2a9d8f" }}
+              className="border-0 fw-semibold btn-clinic"
               onClick={function () {
                 setShowModal(true)
               }}

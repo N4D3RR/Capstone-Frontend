@@ -5,14 +5,13 @@ import {
   Table,
   Spinner,
   Pagination,
-  Badge,
   Row,
   Col,
   Card,
   Form,
 } from "react-bootstrap"
 import { BsPlusLg, BsEyeFill, BsTrashFill } from "react-icons/bs"
-import { Link, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import TopBar from "../components/layout/TopBar"
 import QuoteForm from "../components/quotes/QuoteForm"
 import StatusBadge from "../components/common/StatusBadge"
@@ -166,7 +165,10 @@ const QuotesPage = function () {
                 <div className="text-muted small fw-semibold text-nowrap">
                   Totali
                 </div>
-                <div className="fw-bold fs-4" style={{ color: "#1B2A3D" }}>
+                <div
+                  className="fw-bold fs-4"
+                  style={{ color: "var(--bs-color-sidebar)" }}
+                >
                   {kpi.total}
                 </div>
               </Card.Body>
@@ -178,7 +180,10 @@ const QuotesPage = function () {
                 <div className="text-muted small fw-semibold text-nowrap">
                   Accettati
                 </div>
-                <div className="fw-bold fs-4" style={{ color: "#22c55e" }}>
+                <div
+                  className="fw-bold fs-4"
+                  style={{ color: "var(--bs-success)" }}
+                >
                   {kpi.accepted}
                 </div>
               </Card.Body>
@@ -190,7 +195,10 @@ const QuotesPage = function () {
                 <div className="text-muted small fw-semibold text-nowrap">
                   In attesa
                 </div>
-                <div className="fw-bold fs-4" style={{ color: "#f59e0b" }}>
+                <div
+                  className="fw-bold fs-4"
+                  style={{ color: "var(--bs-warning)" }}
+                >
                   {kpi.sent}
                 </div>
               </Card.Body>
@@ -202,7 +210,10 @@ const QuotesPage = function () {
                 <div className="text-muted small fw-semibold text-nowrap">
                   Rifiutati
                 </div>
-                <div className="fw-bold fs-4" style={{ color: "#ef4444" }}>
+                <div
+                  className="fw-bold fs-4"
+                  style={{ color: "var(--bs-danger)" }}
+                >
                   {kpi.rejected}
                 </div>
               </Card.Body>
@@ -267,8 +278,7 @@ const QuotesPage = function () {
             onClick={function () {
               setShowModal(true)
             }}
-            className="border-0 fw-semibold"
-            style={{ backgroundColor: "#2a9d8f" }}
+            className="border-0 fw-semibold btn-clinic"
           >
             <BsPlusLg className="me-2" />
             Nuovo Preventivo
@@ -278,7 +288,7 @@ const QuotesPage = function () {
 
       {loading ? (
         <div className="d-flex justify-content-center py-5">
-          <Spinner animation="border" style={{ color: "#2a9d8f" }} />
+          <Spinner animation="border" style={{ color: "var(--bs-primary)" }} />
         </div>
       ) : quotes.length === 0 ? (
         <div className="text-center text-muted py-5">

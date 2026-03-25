@@ -90,8 +90,7 @@ const PatientsPage = function () {
         <div className="ms-auto">
           <Button
             onClick={handleNew}
-            className="border-0 fw-semibold"
-            style={{ backgroundColor: "#2a9d8f" }}
+            className="border-0 fw-semibold btn-clinic"
           >
             <BsPersonPlusFill className="me-2" />
             Nuovo Paziente

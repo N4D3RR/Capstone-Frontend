@@ -160,7 +160,10 @@ const PaymentsPage = function () {
               <div className="text-muted small fw-semibold">
                 Totale incassato
               </div>
-              <div className="fw-bold fs-4" style={{ color: "#22c55e" }}>
+              <div
+                className="fw-bold fs-4"
+                style={{ color: "var(--bs-success)" }}
+              >
                 € {kpi ? Number(kpi.totalPaid).toFixed(2) : "—"}
               </div>
             </Card.Body>
@@ -170,7 +173,10 @@ const PaymentsPage = function () {
           <Card className="border-0 shadow-sm">
             <Card.Body className="text-center py-3">
               <div className="text-muted small fw-semibold">Da incassare</div>
-              <div className="fw-bold fs-4" style={{ color: "#f59e0b" }}>
+              <div
+                className="fw-bold fs-4"
+                style={{ color: "var(--bs-warning)" }}
+              >
                 € {kpi ? Number(kpi.totalPending).toFixed(2) : "—"}
               </div>
             </Card.Body>
@@ -182,7 +188,10 @@ const PaymentsPage = function () {
               <div className="text-muted small fw-semibold">
                 Pagamenti completati
               </div>
-              <div className="fw-bold fs-4" style={{ color: "#2a9d8f" }}>
+              <div
+                className="fw-bold fs-4"
+                style={{ color: "var(--bs-primary)" }}
+              >
                 {kpi ? kpi.paidCount : "—"}
               </div>
             </Card.Body>
@@ -192,7 +201,10 @@ const PaymentsPage = function () {
           <Card className="border-0 shadow-sm">
             <Card.Body className="text-center py-3">
               <div className="text-muted small fw-semibold">In sospeso</div>
-              <div className="fw-bold fs-4" style={{ color: "#ef4444" }}>
+              <div
+                className="fw-bold fs-4"
+                style={{ color: "var(--bs-danger)" }}
+              >
                 {kpi ? kpi.pendingCount : "—"}
               </div>
             </Card.Body>
@@ -251,8 +263,16 @@ const PaymentsPage = function () {
                     x2="0"
                     y2="1"
                   >
-                    <stop offset="0%" stopColor="#2a9d8f" stopOpacity={0.2} />
-                    <stop offset="100%" stopColor="#2a9d8f" stopOpacity={0} />
+                    <stop
+                      offset="0%"
+                      stopColor="var(--bs-primary)"
+                      stopOpacity={0.2}
+                    />
+                    <stop
+                      offset="100%"
+                      stopColor="var(--bs-primary)"
+                      stopOpacity={0}
+                    />
                   </linearGradient>
                 </defs>
                 <CartesianGrid
@@ -264,12 +284,12 @@ const PaymentsPage = function () {
                   dataKey="month"
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fontSize: 12, fill: "#9ca3af" }}
+                  tick={{ fontSize: 12, fill: "var(--bs-color-muted-text)" }}
                 />
                 <YAxis
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fontSize: 12, fill: "#9ca3af" }}
+                  tick={{ fontSize: 12, fill: "var(--bs-color-muted-text)" }}
                   tickFormatter={function (v) {
                     return v >= 1000
                       ? "€" + (v / 1000).toFixed(1) + "k"
@@ -290,10 +310,10 @@ const PaymentsPage = function () {
                 <Area
                   type="monotone"
                   dataKey="total"
-                  stroke="#2a9d8f"
+                  stroke="var(--bs-primary)"
                   strokeWidth={2.5}
                   fill="url(#revenueGradient)"
-                  dot={{ fill: "#2a9d8f", strokeWidth: 0, r: 4 }}
+                  dot={{ fill: "var(--bs-primary)", strokeWidth: 0, r: 4 }}
                   activeDot={{ r: 6, stroke: "#ffffff", strokeWidth: 2 }}
                 />
               </AreaChart>
@@ -352,11 +372,7 @@ const PaymentsPage = function () {
           </Form.Select>
         </div>
 
-        <Button
-          onClick={handleNew}
-          className="border-0 fw-semibold"
-          style={{ backgroundColor: "#2a9d8f" }}
-        >
+        <Button onClick={handleNew} className="border-0 fw-semibold btn-clinic">
           <BsCashCoin className="me-2" />
           Nuovo Pagamento
         </Button>

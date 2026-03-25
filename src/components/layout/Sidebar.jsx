@@ -12,6 +12,7 @@ import {
   BsBoxArrowLeft,
   BsClipboard2PulseFill,
 } from "react-icons/bs"
+import { Button } from "react-bootstrap"
 
 //prendo dal Context user, logout, isAdmin
 const Sidebar = function () {
@@ -61,7 +62,7 @@ const Sidebar = function () {
           style={{
             width: 38,
             height: 38,
-            backgroundColor: "#2a9d8f",
+            backgroundColor: "var(--bs-primary)",
             color: "#fff",
           }}
         >
@@ -113,14 +114,14 @@ const Sidebar = function () {
           </div>
         </div>
         {/* pulsante logout */}
-        <button
+        <Button
           className="btn btn-link p-1 text-decoration-none"
           style={{ color: "rgba(255,255,255,0.35)" }}
           onClick={handleLogout}
           title="Esci"
         >
           <BsBoxArrowLeft size={18} />
-        </button>
+        </Button>
       </div>
     </div>
   )

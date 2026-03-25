@@ -24,7 +24,11 @@ const PaymentsTab = function ({ patientId }) {
   if (loading)
     return (
       <div className="d-flex justify-content-center py-4">
-        <Spinner animation="border" size="sm" style={{ color: "#2a9d8f" }} />
+        <Spinner
+          animation="border"
+          size="sm"
+          style={{ color: "var(--bs-primary)" }}
+        />
       </div>
     )
 

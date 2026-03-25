@@ -107,7 +107,7 @@ const QuoteDetailPage = function () {
   if (loading) {
     return (
       <div className="d-flex justify-content-center py-5">
-        <Spinner animation="border" style={{ color: "#2a9d8f" }} />
+        <Spinner animation="border" style={{ color: "var(--bs-primary)" }} />
       </div>
     )
   }
@@ -156,8 +156,7 @@ const QuoteDetailPage = function () {
             <>
               <Button
                 size="sm"
-                className="border-0 fw-semibold"
-                style={{ backgroundColor: "#2a9d8f" }}
+                className="border-0 fw-semibold btn-clinic"
                 onClick={function () {
                   handleStatusChange("SENT")
                 }}
@@ -246,8 +245,7 @@ const QuoteDetailPage = function () {
         {isDraft && (
           <Button
             size="sm"
-            className="border-0 fw-semibold"
-            style={{ backgroundColor: "#2a9d8f" }}
+            className="border-0 fw-semibold btn-clinic"
             onClick={function () {
               setShowItemModal(true)
             }}

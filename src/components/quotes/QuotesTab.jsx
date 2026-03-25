@@ -45,7 +45,11 @@ const QuotesTab = function ({ patientId }) {
   if (loading)
     return (
       <div className="d-flex justify-content-center py-4">
-        <Spinner animation="border" size="sm" style={{ color: "#2a9d8f" }} />
+        <Spinner
+          animation="border"
+          size="sm"
+          style={{ color: "var(--bs-primary)" }}
+        />
       </div>
     )
 
@@ -60,8 +64,7 @@ const QuotesTab = function ({ patientId }) {
         </span>
         <Button
           size="sm"
-          className="border-0 fw-semibold"
-          style={{ backgroundColor: "#2a9d8f" }}
+          className="border-0 fw-semibold btn-clinic"
           onClick={function () {
             setShowForm(true)
           }}

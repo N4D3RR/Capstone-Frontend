@@ -52,7 +52,7 @@ const PatientTable = function ({
   if (loading) {
     return (
       <div className="d-flex justify-content-center py-5">
-        <Spinner animation="border" style={{ color: "#2a9d8f" }} />
+        <Spinner animation="border" style={{ color: "var(--bs-primary)" }} />
       </div>
     )
   }

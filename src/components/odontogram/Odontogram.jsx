@@ -7,11 +7,15 @@ import TreatmentForm from "../treatments/TreatmentForm"
 import OdontogramQuoteModal from "./OdontogramQuoteModal"
 
 const PROCEDURE_COLORS = [
-  { label: "Estrazione", color: "#ef4444", keys: ["estrazione", "extraction"] },
+  {
+    label: "Estrazione",
+    color: "var(--bs-danger)",
+    keys: ["estrazione", "extraction"],
+  },
   { label: "Impianto", color: "#3b82f6", keys: ["impianto", "implant"] },
   {
     label: "Endodonzia",
-    color: "#f59e0b",
+    color: "var(--bs-warning)",
     keys: ["endodonzia", "devitalizzazione", "root canal", "end"],
   },
   {
@@ -21,10 +25,14 @@ const PROCEDURE_COLORS = [
   },
   {
     label: "Otturazione",
-    color: "#2a9d8f",
+    color: "var(--bs-primary)",
     keys: ["otturazione", "filling", "composita", "est"],
   },
-  { label: "Igiene", color: "#22c55e", keys: ["igiene", "scaling", "pulizia"] },
+  {
+    label: "Igiene",
+    color: "var(--bs-success)",
+    keys: ["igiene", "scaling", "pulizia"],
+  },
 ]
 
 const getProcedureColor = function (name, code, description) {
@@ -42,7 +50,7 @@ const getProcedureColor = function (name, code, description) {
       return fields.includes(k)
     })
   })
-  return match ? match.color : "#2a9d8f"
+  return match ? match.color : "var(--bs-primary)"
 }
 
 const EmptyPanel = function () {
@@ -98,7 +106,7 @@ const ToothPanel = function ({
             backgroundColor: "#f1f5f9",
             fontWeight: 700,
             fontSize: 14,
-            color: "#2a9d8f",
+            color: "var(--bs-primary)",
             flexShrink: 0,
           }}
         >
@@ -160,7 +168,7 @@ const ToothPanel = function ({
               <Spinner
                 animation="border"
                 size="sm"
-                style={{ color: "#2a9d8f" }}
+                style={{ color: "var(--bs-primary)" }}
               />
             </div>
           ) : (
@@ -198,8 +206,7 @@ const ToothPanel = function ({
               </p>
               <Button
                 size="sm"
-                className="border-0 fw-semibold w-100"
-                style={{ backgroundColor: "#2a9d8f" }}
+                className="border-0 fw-semibold w-100 btn-clinic"
                 onClick={onConfirmTreatment}
               >
                 ✓ Registra trattamento
@@ -207,8 +214,10 @@ const ToothPanel = function ({
               <Button
                 size="sm"
                 variant="outline-secondary"
-                className="fw-semibold w-100 mt-2"
-                style={{ color: "#2a9d8f", border: "1px solid #2a9d8f" }}
+                className="fw-semibold w-100 mt-2 btn-clinic"
+                style={{
+                  border: "1px solid var(--bs-primary)",
+                }}
                 onClick={onConfirmQuote}
               >
                 + Aggiungi al preventivo
@@ -218,8 +227,7 @@ const ToothPanel = function ({
             /* bottone iniziale per aprire il picker */
             <Button
               size="sm"
-              className="border-0 fw-semibold w-100"
-              style={{ backgroundColor: "#2a9d8f" }}
+              className="border-0 fw-semibold w-100 btn-clinic"
               onClick={onAddTreatment}
             >
               + Seleziona prestazione
@@ -325,7 +333,7 @@ const Odontogram = function ({ patientId }) {
             treats[0]?.procedureName,
             treats[0]?.procedureCode,
             treats[0]?.procedureDescription,
-          ) ?? "#2a9d8f"
+          ) ?? "var(--bs-primary)"
         if (!groups[color]) {
           groups[color] = {
             label: treats[0]?.procedureName ?? "Trattamento",
@@ -456,7 +464,7 @@ const Odontogram = function ({ patientId }) {
   if (loading) {
     return (
       <div className="d-flex justify-content-center py-4">
-        <Spinner animation="border" style={{ color: "#2a9d8f" }} />
+        <Spinner animation="border" style={{ color: "var(--bs-primary)" }} />
       </div>
     )
   }
@@ -615,8 +623,7 @@ const Odontogram = function ({ patientId }) {
               </Button>
               <Button
                 size="sm"
-                className="border-0 fw-semibold"
-                style={{ backgroundColor: "#2a9d8f" }}
+                className="border-0 fw-semibold btn-clinic"
                 onClick={function () {
                   setShowQuoteModal(true)
                 }}

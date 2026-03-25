@@ -119,8 +119,7 @@ const ProceduresPage = function () {
           <div className="ms-auto">
             <Button
               onClick={handleNew}
-              className="border-0 fw-semibold"
-              style={{ backgroundColor: "#2a9d8f" }}
+              className="border-0 fw-semibold btn-clinic"
             >
               <BsPlusLg className="me-2" />
               Nuova Prestazione
@@ -131,7 +130,7 @@ const ProceduresPage = function () {
 
       {loading ? (
         <div className="d-flex justify-content-center py-5">
-          <Spinner animation="border" style={{ color: "#2a9d8f" }} />
+          <Spinner animation="border" style={{ color: "var(--bs-primary)" }} />
         </div>
       ) : procedures.length === 0 ? (
         <div className="text-center text-muted py-5">

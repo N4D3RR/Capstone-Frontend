@@ -102,7 +102,7 @@ const DashboardPage = function () {
                   width: 44,
                   height: 44,
                   backgroundColor: "rgba(42, 157, 143, 0.1)",
-                  color: "#2a9d8f",
+                  color: "var(--bs-primary)",
                 }}
               >
                 <BsCalendarPlus size={20} />
@@ -164,7 +164,7 @@ const DashboardPage = function () {
                   width: 44,
                   height: 44,
                   backgroundColor: "rgba(245, 158, 11, 0.1)",
-                  color: "#f59e0b",
+                  color: "var(--bs-warning)",
                 }}
               >
                 <BsExclamationTriangleFill size={20} />
@@ -208,7 +208,7 @@ const DashboardPage = function () {
                         Math.round(
                           (completedCount / appointments.length) * 100,
                         ) + "%",
-                      backgroundColor: "#2a9d8f",
+                      backgroundColor: "var(--bs-primary)",
                       transition: "width 0.4s ease",
                     }}
                   />
@@ -218,7 +218,10 @@ const DashboardPage = function () {
             <Card.Body className="px-0 py-2">
               {loadingAppts ? (
                 <div className="d-flex justify-content-center py-4">
-                  <Spinner animation="border" style={{ color: "#2a9d8f" }} />
+                  <Spinner
+                    animation="border"
+                    style={{ color: "var(--bs-primary)" }}
+                  />
                 </div>
               ) : appointments.length === 0 ? (
                 <p className="text-muted text-center py-4 mb-0">
@@ -271,7 +274,9 @@ const DashboardPage = function () {
                         style={{
                           width: 3,
                           height: 36,
-                          backgroundColor: isPast ? "#9ba8b7" : "#2a9d8f",
+                          backgroundColor: isPast
+                            ? "#9ba8b7"
+                            : "var(--bs-primary)",
                         }}
                       />
 
@@ -313,7 +318,10 @@ const DashboardPage = function () {
             <Card.Body className="px-0 py-2">
               {loadingQuotes ? (
                 <div className="d-flex justify-content-center py-4">
-                  <Spinner animation="border" style={{ color: "#2a9d8f" }} />
+                  <Spinner
+                    animation="border"
+                    style={{ color: "var(--bs-primary)" }}
+                  />
                 </div>
               ) : pendingQuotes.length === 0 ? (
                 <p className="text-muted text-center py-4 mb-0">

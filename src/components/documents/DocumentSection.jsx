@@ -6,9 +6,9 @@ import api from "../../services/api"
 
 const TYPE_LABELS = {
   XRAY: { label: "Radiografia", color: "#6366f1" },
-  CONSENT: { label: "Consenso", color: "#f59e0b" },
+  CONSENT: { label: "Consenso", color: "var(--bs-warning)" },
   REPORT: { label: "Referto", color: "#3b82f6" },
-  PRESCRIPTION: { label: "Ricetta", color: "#22c55e" },
+  PRESCRIPTION: { label: "Ricetta", color: "var(--bs-success)" },
   INVOICE: { label: "Fattura", color: "#8b5cf6" },
   OTHER: { label: "Altro", color: "#94a3b8" },
 }
@@ -47,8 +47,8 @@ const DocumentsSection = function ({ clinicalRecordId, documents, onRefresh }) {
         </h6>
         <Button
           size="sm"
-          className="border-0 fw-semibold"
-          style={{ backgroundColor: "#2a9d8f", fontSize: 12 }}
+          className="border-0 fw-semibold btn-clinic"
+          style={{ fontSize: 12 }}
           onClick={function () {
             setShowUpload(true)
           }}

@@ -121,7 +121,7 @@ const QuoteItemForm = function ({ show, quoteId, onClose, onSaved }) {
                 <Spinner
                   animation="border"
                   size="sm"
-                  style={{ color: "#2a9d8f" }}
+                  style={{ color: "var(--bs-primary)" }}
                 />
               </div>
             ) : (
@@ -193,8 +193,7 @@ const QuoteItemForm = function ({ show, quoteId, onClose, onSaved }) {
           </Button>
           <Button
             type="submit"
-            className="border-0 fw-semibold"
-            style={{ backgroundColor: "#2a9d8f" }}
+            className="border-0 fw-semibold btn-clinic"
             disabled={loading || loadingProcedures}
           >
             {loading ? <Spinner animation="border" size="sm" /> : "Aggiungi"}

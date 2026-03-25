@@ -51,7 +51,11 @@ const TreatmentPlansTab = function ({ patientId }) {
   if (loading)
     return (
       <div className="d-flex justify-content-center py-4">
-        <Spinner animation="border" size="sm" style={{ color: "#2a9d8f" }} />
+        <Spinner
+          animation="border"
+          size="sm"
+          style={{ color: "var(--bs-primary)" }}
+        />
       </div>
     )
 
@@ -106,7 +110,10 @@ const TreatmentPlansTab = function ({ patientId }) {
                   <Button
                     size="sm"
                     className="border-0 fw-semibold ms-2"
-                    style={{ backgroundColor: "#2a9d8f", fontSize: 12 }}
+                    style={{
+                      backgroundColor: "var(--bs-primary)",
+                      fontSize: 12,
+                    }}
                     onClick={function (e) {
                       e.stopPropagation()
                       setSelectedPlanId(tp.id)
@@ -126,7 +133,7 @@ const TreatmentPlansTab = function ({ patientId }) {
                     </span>
                     <span
                       className="fw-semibold"
-                      style={{ fontSize: 12, color: "#2a9d8f" }}
+                      style={{ fontSize: 12, color: "var(--bs-primary)" }}
                     >
                       {Math.round((completedItems / totalItems) * 100)}%
                     </span>
@@ -140,7 +147,7 @@ const TreatmentPlansTab = function ({ patientId }) {
                       style={{
                         width:
                           Math.round((completedItems / totalItems) * 100) + "%",
-                        backgroundColor: "#2a9d8f",
+                        backgroundColor: "var(--bs-primary)",
                         transition: "width 0.4s ease",
                       }}
                     />
@@ -177,7 +184,7 @@ const TreatmentPlansTab = function ({ patientId }) {
                             {completed ? (
                               <span
                                 className="d-flex align-items-center gap-1"
-                                style={{ color: "#22c55e" }}
+                                style={{ color: "var(--bs-success)" }}
                               >
                                 <BsCheckCircleFill size={14} />
                                 <span style={{ fontSize: 12, fontWeight: 600 }}>
@@ -189,7 +196,7 @@ const TreatmentPlansTab = function ({ patientId }) {
                                 style={{
                                   fontSize: 12,
                                   fontWeight: 600,
-                                  color: "#f59e0b",
+                                  color: "var(--bs-warning)",
                                 }}
                               >
                                 Da fare
@@ -205,7 +212,7 @@ const TreatmentPlansTab = function ({ patientId }) {
                                 size="sm"
                                 className="border-0 fw-semibold"
                                 style={{
-                                  backgroundColor: "#2a9d8f",
+                                  backgroundColor: "var(--bs-primary)",
                                   fontSize: 12,
                                 }}
                                 onClick={function () {

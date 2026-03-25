@@ -31,7 +31,7 @@ const ProtectedRoute = function ({ children }) {
         className="d-flex justify-content-center align-items-center"
         style={{ height: "100vh" }}
       >
-        <Spinner animation="border" style={{ color: "#2a9d8f" }} />
+        <Spinner animation="border" style={{ color: "var(--bs-primary)" }} />
       </div>
     )
   }
@@ -55,7 +55,7 @@ const PublicRoute = function ({ children }) {
         className="d-flex justify-content-center align-items-center"
         style={{ height: "100vh" }}
       >
-        <Spinner animation="border" style={{ color: "#2a9d8f" }} />
+        <Spinner animation="border" style={{ color: "var(--bs-primary)" }} />
       </div>
     )
   }

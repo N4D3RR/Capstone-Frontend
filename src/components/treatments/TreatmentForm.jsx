@@ -131,7 +131,10 @@ const TreatmentForm = function ({
 
           {loadingData ? (
             <div className="d-flex justify-content-center py-3">
-              <Spinner animation="border" style={{ color: "#2a9d8f" }} />
+              <Spinner
+                animation="border"
+                style={{ color: "var(--bs-primary)" }}
+              />
             </div>
           ) : (
             <>
@@ -275,8 +278,7 @@ const TreatmentForm = function ({
           </Button>
           <Button
             type="submit"
-            className="border-0 fw-semibold"
-            style={{ backgroundColor: "#2a9d8f" }}
+            className="border-0 fw-semibold btn-clinic"
             disabled={loading || loadingData}
           >
             {loading ? (

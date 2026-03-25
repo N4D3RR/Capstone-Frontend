@@ -183,8 +183,7 @@ const OdontogramQuoteModal = function ({
           </Button>
           <Button
             type="submit"
-            className="border-0 fw-semibold"
-            style={{ backgroundColor: "#2a9d8f" }}
+            className="border-0 fw-semibold btn-clinic"
             disabled={loading}
           >
             {loading ? (

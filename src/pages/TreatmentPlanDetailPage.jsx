@@ -21,28 +21,27 @@ const TreatmentPlanDetailPage = function () {
   const [showAppointmentModal, setShowAppointmentModal] = useState(false)
 
   const loadData = function () {
-    Promise.allSettled([
-      api.get("/api/treatment-plans/" + id),
-      api.get("/api/treatments/patient/"),
-    ]).then(function (results) {
-      if (results[0].status === "fulfilled") {
-        const p = results[0].value
-        setPlan(p)
-        // carica i trattamenti del paziente ora che abbiamo il patientId
-        api
-          .get(
-            "/api/treatments/patient/" +
-              p.quote.patient.id +
-              "?page=0&size=100",
-          )
-          .then(function (data) {
-            setTreatments(data.content || [])
-          })
-      } else {
-        setError("Piano di cura non trovato")
-      }
-      setLoading(false)
-    })
+    Promise.allSettled([api.get("/api/treatment-plans/" + id)]).then(
+      function (results) {
+        if (results[0].status === "fulfilled") {
+          const p = results[0].value
+          setPlan(p)
+          // carica i trattamenti del paziente ora che abbiamo il patientId
+          api
+            .get(
+              "/api/treatments/patient/" +
+                p.quote.patient.id +
+                "?page=0&size=100",
+            )
+            .then(function (data) {
+              setTreatments(data.content || [])
+            })
+        } else {
+          setError("Piano di cura non trovato")
+        }
+        setLoading(false)
+      },
+    )
   }
 
   useEffect(
@@ -82,7 +81,7 @@ const TreatmentPlanDetailPage = function () {
   if (loading)
     return (
       <div className="d-flex justify-content-center py-5">
-        <Spinner animation="border" style={{ color: "#2a9d8f" }} />
+        <Spinner animation="border" style={{ color: "var(--bs-primary)" }} />
       </div>
     )
 
@@ -121,7 +120,7 @@ const TreatmentPlanDetailPage = function () {
             <Button
               size="sm"
               className="border-0 fw-semibold"
-              style={{ backgroundColor: "#2a9d8f", fontSize: 12 }}
+              style={{ backgroundColor: "var(--bs-primary)", fontSize: 12 }}
               onClick={function () {
                 setShowAppointmentModal(true)
               }}
@@ -171,7 +170,7 @@ const TreatmentPlanDetailPage = function () {
               <div className="text-secondary small fw-semibold mb-1">
                 Avanzamento
               </div>
-              <div className="fw-bold" style={{ color: "#2a9d8f" }}>
+              <div className="fw-bold" style={{ color: "var(--bs-primary)" }}>
                 {completedItems}/{totalItems} prestazioni ({progressPct}%)
               </div>
             </div>
@@ -187,7 +186,7 @@ const TreatmentPlanDetailPage = function () {
                   className="h-100 rounded-pill"
                   style={{
                     width: progressPct + "%",
-                    backgroundColor: "#2a9d8f",
+                    backgroundColor: "var(--bs-primary)",
                     transition: "width 0.4s ease",
                   }}
                 />
@@ -228,7 +227,7 @@ const TreatmentPlanDetailPage = function () {
                         {completed ? (
                           <span
                             className="d-flex align-items-center gap-1"
-                            style={{ color: "#22c55e" }}
+                            style={{ color: "var(--bs-success)" }}
                           >
                             <BsCheckCircleFill size={14} />
                             <span style={{ fontSize: 12, fontWeight: 600 }}>
@@ -256,7 +255,7 @@ const TreatmentPlanDetailPage = function () {
                             size="sm"
                             className="border-0 fw-semibold"
                             style={{
-                              backgroundColor: "#2a9d8f",
+                              backgroundColor: "var(--bs-primary)",
                               fontSize: 12,
                             }}
                             onClick={function () {

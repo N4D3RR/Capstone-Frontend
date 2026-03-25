@@ -78,7 +78,7 @@ const LoginPage = function () {
               width: 56,
               height: 56,
               backgroundColor: "rgba(42, 157, 143, 0.1)",
-              color: "#2a9d8f",
+              color: "var(--bs-primary)",
             }}
           >
             <BsClipboard2PulseFill size={28} />
@@ -137,7 +137,7 @@ const LoginPage = function () {
             type="submit"
             className="w-100 fw-bold border-0"
             style={{
-              backgroundColor: "#2a9d8f",
+              backgroundColor: "var(--bs-primary)",
               padding: "11px",
               fontSize: 15,
             }}

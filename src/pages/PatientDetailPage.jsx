@@ -57,7 +57,7 @@ const PatientDetailPage = function () {
   if (loading)
     return (
       <div className="d-flex justify-content-center py-5">
-        <Spinner animation="border" style={{ color: "#2a9d8f" }} />
+        <Spinner animation="border" style={{ color: "var(--bs-primary)" }} />
       </div>
     )
 
@@ -81,8 +81,7 @@ const PatientDetailPage = function () {
           <BsArrowLeft className="me-1" /> Torna ai pazienti
         </Button>
         <Button
-          className="border-0 fw-semibold"
-          style={{ backgroundColor: "#2a9d8f" }}
+          className="border-0 fw-semibold  btn-clinic"
           onClick={function () {
             setShowEditModal(true)
           }}
