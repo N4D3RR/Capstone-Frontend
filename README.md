@@ -1,16 +1,166 @@
-# React + Vite
+# OpenClinic — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React SPA for OpenClinic, a dental practice management system built as an EPICODE bootcamp capstone project.
 
-Currently, two official plugins are available:
+> The backend repository is available at [Capstone-Backend](https://github.com/N4D3RR/Capstone-Project)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## Screenshots
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+![Dashboard](docs/dashboard.png)
+![Odontogram](docs/odontogram.png)
+![Payments](docs/payments.png)
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Tech Stack
+
+|            |                                                 |
+| ---------- | ----------------------------------------------- |
+| Framework  | React 18 + Vite                                 |
+| UI Library | React-Bootstrap 2                               |
+| Styling    | SCSS + Bootstrap variable overrides             |
+| Calendar   | FullCalendar (TimeGrid + DayGrid + Interaction) |
+| Charts     | Recharts                                        |
+| Routing    | React Router v6                                 |
+| Icons      | react-icons/bs                                  |
+| Font       | DM Sans (Google Fonts)                          |
+
+---
+
+## Features
+
+### Pages
+
+| Route                  | Page                  | Description                                                                                     |
+| ---------------------- | --------------------- | ----------------------------------------------------------------------------------------------- |
+| `/`                    | Dashboard             | KPI cards, revenue area chart, weekly appointments bar chart, today's schedule, recent patients |
+| `/patients`            | Patients              | Searchable paginated table, create/edit modal                                                   |
+| `/patients/:id`        | Patient Detail        | Tabs: Odontogram, Registry, Appointments, Clinical Records, Treatment Plans, Quotes, Payments   |
+| `/appointments`        | Appointments          | FullCalendar with drag & drop, resize, color by status; toggle to list view with filters        |
+| `/quotes`              | Quotes                | Paginated table with status filter                                                              |
+| `/quotes/:id`          | Quote Detail          | Items management, status change, PDF export                                                     |
+| `/treatment-plans/:id` | Treatment Plan Detail | Linked appointments, clinical notes, status                                                     |
+| `/payments`            | Payments & Report     | KPI cards, monthly revenue chart, date/status filters, invoice PDF download                     |
+| `/procedures`          | Procedures            | Catalog CRUD                                                                                    |
+| `/users`               | Users                 | User management (Admin only)                                                                    |
+
+### Key components
+
+**Odontogram** — interactive FDI chart with per-tooth treatment history, procedure picker, and direct quote creation from selected teeth (multi-tooth cart).
+
+**AI Assistant** — sidebar chatbot powered by OpenRouter, context-aware (today's appointments, total patients), with conversation history.
+
+**AppointmentsPage** — FullCalendar with:
+
+- Drag & drop (updates dateTime via PUT)
+- Resize (updates duration via PUT)
+- `info.revert()` on backend failure
+- Timezone fix: `toISOString()` offset correction for local time
+- Toggle between calendar and list view
+
+**PaymentsPage** — financial report with live KPIs from backend, AreaChart (monthly revenue), month-over-month comparison card.
+
+---
+
+## Project Structure
+
+```
+src/
+├── context/
+│   └── AuthContext.jsx        # JWT storage, user state, role helpers
+├── services/
+│   └── api.js                 # Centralized fetch wrapper (get, post, put, delete, upload, getBlob)
+├── pages/                     # One file per route
+├── components/
+│   ├── layout/                # Sidebar, TopBar, AppLayout (Outlet)
+│   ├── appointments/          # AppointmentForm, AppointmentsTab, AppointmentListView
+│   ├── patients/              # PatientForm, PatientTable
+│   ├── quotes/                # QuoteForm, QuoteItemForm, QuotesTab
+│   ├── payments/              # PaymentForm, PaymentTable, PaymentsTab
+│   ├── odontogram/            # Odontogram, OdontogramQuoteModal
+│   ├── treatment-plan/        # TreatmentPlansTab, TreatmentForm
+│   ├── clinicalRecord/        # ClinicalRecordsTab, ClinicalRecordForm
+│   ├── users/                 # UserForm
+│   ├── ai/                    # AiAssistant
+│   └── common/                # StatusBadge
+└── styles/
+    └── App.scss               # Bootstrap variable overrides + global styles
+```
+
+---
+
+## Design System — "Clinical Modern"
+
+| Token              | Value     |
+| ------------------ | --------- |
+| Sidebar background | `#1B2A3D` |
+| Primary (teal)     | `#2A9D8F` |
+| Page background    | `#F4F6F9` |
+| Font               | DM Sans   |
+
+Status colors follow a consistent palette across `StatusBadge`, calendar events, and KPI cards.
+
+---
+
+## Code Conventions
+
+- **Component definitions**: `const X = function() {}` (no arrow functions)
+- **Async**: `.then().catch().finally()` chains (no async/await)
+- **UI**: React-Bootstrap components exclusively
+- **State**: `useState` + `useEffect` per component; no Redux
+- **Auth**: Context API only
+- **Forms**: `emptyForm` objects declared outside components to avoid recreation on render
+
+---
+
+## Setup
+
+### Prerequisites
+
+- Node.js 18+
+- The backend running on `http://localhost:3004`
+
+### 1. Configure environment
+
+Create `.env.local` in the project root:
+
+```
+VITE_API_URL=http://localhost:3004
+```
+
+### 2. Install and run
+
+```bash
+npm install
+npm run dev
+```
+
+The app will be available at `http://localhost:5173`.
+
+### Default credentials
+
+Use the admin account seeded by the backend on first startup:
+
+| Field    | Value           |
+| -------- | --------------- |
+| Email    | `admin@test.it` |
+| Password | `Admin1234`     |
+
+---
+
+## Authentication Flow
+
+1. User logs in via `POST /auth/login`
+2. Backend returns `accessToken` (JWT)
+3. Token stored in `localStorage`
+4. `AuthContext` verifies token validity on app load via `GET /api/users/me`
+5. All API calls include `Authorization: Bearer <token>` header via `api.js`
+6. On 401, `api.js` clears storage and redirects to `/login`
+
+---
+
+## Author
+
+Nader Deghaili — EPICODE Capstone Project 2026
