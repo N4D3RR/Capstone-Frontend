@@ -1,4 +1,4 @@
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import { NavLink, useNavigate } from "react-router-dom"
 import { AuthContext } from "../../context/AuthContext"
 import {
@@ -11,6 +11,8 @@ import {
   BsPersonFillGear,
   BsBoxArrowLeft,
   BsClipboard2PulseFill,
+  BsChevronLeft,
+  BsChevronRight,
 } from "react-icons/bs"
 import { Button } from "react-bootstrap"
 
@@ -18,6 +20,18 @@ import { Button } from "react-bootstrap"
 const Sidebar = function () {
   const { user, logout, isAdmin } = useContext(AuthContext)
   const navigate = useNavigate()
+  const [collapsed, setCollapsed] = useState(false)
+
+  const handleToggle = function () {
+    setCollapsed(function (prev) {
+      const next = !prev
+      document.documentElement.style.setProperty(
+        "--sidebar-width",
+        next ? "68px" : "250px",
+      )
+      return next
+    })
+  }
 
   //al logout, cancello toker e user e rimando al login
   const handleLogout = function () {
@@ -54,11 +68,11 @@ const Sidebar = function () {
   }
 
   return (
-    <div className="sidebar">
+    <div className={"sidebar" + (collapsed ? " sidebar--collapsed" : "")}>
       {/* Logo */}
       <div className="sidebar-logo">
         <div
-          className="d-flex align-items-center justify-content-center rounded-3"
+          className="d-flex align-items-center justify-content-center rounded-3 flex-shrink-0"
           style={{
             width: 38,
             height: 38,
@@ -68,19 +82,28 @@ const Sidebar = function () {
         >
           <BsClipboard2PulseFill size={20} />
         </div>
-        <div>
-          <p className="mb-0 text-white fw-bold" style={{ fontSize: 17 }}>
-            OpenClinic
-          </p>
-          <p
-            className="mb-0"
-            style={{ fontSize: 11, color: "rgba(255,255,255,0.4)" }}
-          >
-            Gestionale Odontoiatrico
-          </p>
-        </div>
+        {!collapsed && (
+          <div>
+            <p className="mb-0 text-white fw-bold" style={{ fontSize: 17 }}>
+              OpenClinic
+            </p>
+            <p
+              className="mb-0"
+              style={{ fontSize: 11, color: "rgba(255,255,255,0.4)" }}
+            >
+              Gestionale Odontoiatrico
+            </p>
+          </div>
+        )}
       </div>
-
+      {/* Toggle */}
+      <button
+        className="sidebar-toggle"
+        onClick={handleToggle}
+        title={collapsed ? "Espandi" : "Comprimi"}
+      >
+        {collapsed ? <BsChevronRight size={13} /> : <BsChevronLeft size={13} />}
+      </button>
       {/* Navigazione */}
       <nav className="sidebar-nav">
         {navItems.map(function (item) {
@@ -95,7 +118,7 @@ const Sidebar = function () {
               }}
             >
               <span className="sidebar-link-icon">{item.icon}</span>
-              {item.label}
+              {!collapsed && item.label}
             </NavLink>
           )
         })}
@@ -105,14 +128,19 @@ const Sidebar = function () {
       <div className="sidebar-user">
         {/* avatar con inizali utente */}
         <div className="sidebar-avatar">{getInitials()}</div>
-        <div className="flex-grow-1">
-          <div className="text-white" style={{ fontSize: 13, fontWeight: 600 }}>
-            {user ? user.firstName + " " + user.lastName : ""}
+        {!collapsed && (
+          <div className="flex-grow-1">
+            <div
+              className="text-white"
+              style={{ fontSize: 13, fontWeight: 600 }}
+            >
+              {user ? user.firstName + " " + user.lastName : ""}
+            </div>
+            <div style={{ fontSize: 11, color: "rgba(255,255,255,0.4)" }}>
+              {user ? user.role : ""}
+            </div>
           </div>
-          <div style={{ fontSize: 11, color: "rgba(255,255,255,0.4)" }}>
-            {user ? user.role : ""}
-          </div>
-        </div>
+        )}
         {/* pulsante logout */}
         <Button
           className="btn btn-link p-1 text-decoration-none"

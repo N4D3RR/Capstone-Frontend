@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react"
 import { Spinner, Badge, Button } from "react-bootstrap"
-import ClinicalRecordForm from "../clinicalRecord/ClinicalRecordForm"
+import ClinicalRecordForm from "./ClinicalRecordForm"
 import api from "../../services/api"
 import DocumentsSection from "../documents/DocumentSection"
 
