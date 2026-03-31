@@ -22,10 +22,14 @@ const AppointmentListView = function ({ appointments, onEdit, onRangeChange }) {
     }
   }
 
-  const filtered = appointments.filter(function (a) {
-    if (filterStatus && a.status !== filterStatus) return false
-    return true
-  })
+  const filtered = appointments
+    .filter(function (a) {
+      if (filterStatus && a.status !== filterStatus) return false
+      return true
+    })
+    .sort(function (a, b) {
+      return new Date(a.dateTime) - new Date(b.dateTime)
+    })
 
   return (
     <>

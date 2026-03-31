@@ -8,7 +8,7 @@ const emptyForm = {
   userId: "",
   treatmentPlanId: "",
   dateTime: "",
-  duration: "",
+  duration: "30",
   status: "CONFIRMED",
   notes: "",
 }

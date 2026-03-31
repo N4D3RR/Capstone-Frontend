@@ -105,9 +105,11 @@ const AppointmentsPage = function () {
   const handleEventDrop = function (info) {
     const appointment = info.event.extendedProps.appointment
     const newDateTime = toLocalISO(info.event.start)
+    //prendo id dall'evento, non più dalle props appointment.id per evitare errori
+    const appointmentId = info.event.id
 
     api
-      .put("/api/appointments/" + appointment.id, {
+      .put("/api/appointments/" + appointmentId, {
         dateTime: newDateTime,
         duration: appointment.duration,
         status: appointment.status,
@@ -133,9 +135,10 @@ const AppointmentsPage = function () {
     const newDuration = Math.round(
       (info.event.end.getTime() - info.event.start.getTime()) / 60000,
     )
+    const appointmentId = info.event.id
 
     api
-      .put("/api/appointments/" + appointment.id, {
+      .put("/api/appointments/" + appointmentId, {
         dateTime: toLocalISO(info.event.start),
         duration: newDuration,
         status: appointment.status,
