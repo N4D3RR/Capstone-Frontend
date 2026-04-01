@@ -12,7 +12,13 @@ const emptyForm = {
   notes: "",
 }
 
-const PaymentForm = function ({ show, payment, onClose, onSaved }) {
+const PaymentForm = function ({
+  show,
+  payment,
+  onClose,
+  onSaved,
+  preselectedPatientId,
+}) {
   const [form, setForm] = useState(emptyForm)
   const [patients, setPatients] = useState([])
   const [loading, setLoading] = useState(false)
@@ -55,6 +61,7 @@ const PaymentForm = function ({ show, payment, onClose, onSaved }) {
         setForm({
           ...emptyForm,
           paymentDate: new Date().toISOString().substring(0, 10),
+          patientId: preselectedPatientId || "",
         })
       }
     },
@@ -166,6 +173,7 @@ const PaymentForm = function ({ show, payment, onClose, onSaved }) {
                     value={form.patientId}
                     onChange={handleChange}
                     required
+                    disabled={!!preselectedPatientId}
                   >
                     <option value="">Seleziona un paziente...</option>
                     {patients.map(function (p) {

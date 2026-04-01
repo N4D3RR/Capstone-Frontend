@@ -68,7 +68,8 @@ const AppointmentsPage = function () {
         "/api/appointments/date-range?from=" +
           from.toISOString() +
           "&to=" +
-          to.toISOString(),
+          to.toISOString() +
+          "&page=0&size=200",
       )
       .then(function (data) {
         setAppointments(data.content || [])
