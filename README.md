@@ -141,12 +141,7 @@ The app will be available at `http://localhost:5173`.
 
 ### Default credentials
 
-Use the admin account seeded by the backend on first startup:
-
-| Field    | Value           |
-| -------- | --------------- |
-| Email    | `admin@test.it` |
-| Password | `Admin1234`     |
+Use the admin account seeded by the backend (configured via `ADMIN_DEFAULT_EMAIL` and `ADMIN_DEFAULT_PASSWORD` environment variables).
 
 ---
 
