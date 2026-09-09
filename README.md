@@ -27,7 +27,7 @@ React SPA for OpenClinic, a dental practice management system built as an EPICOD
 | Hygienist | sara.conti@openclinic.it     | Password1! |
 | Secretary | giulia.moretti@openclinic.it | Password1! |
 
-> Each role has different permissions — try logging in with different accounts to see how the interface adapts. The database is pre-seeded with realistic demo data.
+> Each role has different permissions. The database is pre-seeded with fictional demo data only. No real patient data or protected health information is included. This application is not intended for clinical use.
 
 ---
 
